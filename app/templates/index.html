@@ -13,7 +13,7 @@
                 {% for order in orders %}
                 <li class="list-group-item">
                     <div class="d-flex justify-content-between">
-                        <span>{{ order.client.name }}({{ order.address }} - {{ order.telephone_number }})</span><span>{{ order.get_lines_description() }}</span><span>{{ order.date|format_datetime }}</span>
+                        <span>{{ order.client.name }}({% if order.is_delivery %}{{ order.address }}{% else %}Retira en local{% endif %} - {{ order.telephone_number }})</span><span>{{ order.get_lines_description() }}</span><span>{{ order.date|format_datetime }}</span>
                     </div>
                     <div>${{ order.get_total_price() }}</div>
                     <div>

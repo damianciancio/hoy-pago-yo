@@ -25,6 +25,20 @@ def new_order_add_products(id_order):
     order = Order.query.get(id_order)
     return render_template('add-order-items.html', order=order)
 
+@app.route('/productos/actualizar-lista', methods=['GET', 'POST'])
+def update_pricelist():
+    if request.method == 'POST':
+        json_text = request.form.get('products', [])
+        products = json.loads(json_text)
+        for product_price in products:
+            product = Product.query.get(product_price['id_product'])
+            product.price = product_price['price']
+            db.session.merge(product)
+        db.session.commit()
+
+    products = Product.query.all()
+    return render_template('update-pricelist.html', products=products)
+
 
 @app.route('/pedido/<int:id_order>/confirmar', methods=['POST'])
 def confirm_order(id_order):

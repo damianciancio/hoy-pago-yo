@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block title %}Actualizar lista de precios{% endblock %}
+{% block head %}
+{{ super() }}
+<script type="text/javascript" src="{{url_for('static', filename='js/update-price-list.js')}}"></script>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h4>Actualizar precios</h4>
+        <table id="update-pricelist-table" class="table table-bordered">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Descripción</th>
+                <th>Precio</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                    <tr>
+                        <td class="id_product" data-value="{{ product.id_product }}">{{ product.id_product }}</td>
+                        <td>{{ product.description }}</td>
+                        <td class="price"><input type="number" value="{{ product.price }}"></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <button class="btn btn-primary" id="update-price-list">Actualizar</button>
+    </div>
+</div>
+{% endblock %}
