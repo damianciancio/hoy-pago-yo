@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar pedido</title>
+</head>
+<body>
+    {{ order.client.name }}
+    {{ order.address }}
+    <div>Items</div>
+    {% for item in order.order_lines %}
+        <div>{{ item.quantity }}</div><div>{{ item.product.description }}</div>
+    {% endfor %}
+    <form method="post">
+        <div><label>ID producto</label><input type="text" name="id_product"></div>
+        <div><label>Cantidad</label><input type="number" name="quantity"></div>
+        <div><input type="submit" value="Agregar"></div>
+    </form>
+</body>
+</html>
