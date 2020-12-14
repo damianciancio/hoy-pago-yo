@@ -39,13 +39,13 @@
                         <div class="form-group"><input class="form-control" type="submit" value="Agregar"></div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group"><input class="form-control" class="btn btn-primary" formaction="/editar-pedido/{{ order.id_order }}/confirm" type="submit" value="Agregar y confirmar"></div>
+                        <div class="form-group"><input class="form-control" class="btn btn-primary" formaction="/editar-pedido/{{ order.id_order }}/confirmar" type="submit" value="Agregar y confirmar"></div>
                     </div>
                 </div>
 
             </form>
             <form method="post">
-                <div class="form-group"><input class="form-control" class="btn btn-primary" type="submit" formaction="/pedido/{{ order.id_order }}/confirm" value="Confirmar"></div>
+                <div class="form-group"><input class="form-control" class="btn btn-primary" type="submit" formaction="/pedido/{{ order.id_order }}/confirmar" value="Confirmar"></div>
             </form>
         </div>
         <div id="products-list" class="col-md-6">

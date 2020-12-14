@@ -17,7 +17,7 @@
             <div class="form-group">
                 <label>ID cliente
                 </label>
-                <input class="form-control" disabled="disabled" type="number" name="id_client">
+                <input class="form-control" type="number" name="id_client">
             </div>
             <div class="form-group">
                 <label>Nombre cliente
@@ -37,7 +37,7 @@
             <div class="form-group">
                 <label>Fecha y hora
                 </label>
-                <input class="form-control" value='{{now.strftime("%Y-%m-%dT%H:%M")}}' type="datetime-local" name="date">
+                <input class="form-control" value='{{now|format_datetime("%Y-%m-%dT%H:%M")}}' type="datetime-local" name="date">
             </div>
             <div class="form-group">
                 <input type="checkbox" id="is_delivery" name="is_delivery">

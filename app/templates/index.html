@@ -13,10 +13,23 @@
                 {% for order in orders %}
                 <li class="list-group-item">
                     <div class="d-flex justify-content-between">
-                        <span>{{ order.address }}</span><span>{{ order.get_lines_description() }}</span><span>{{ order.date }}</span>
+                        <span>{{ order.client.name }}({{ order.address }} - {{ order.telephone_number }})</span><span>{{ order.get_lines_description() }}</span><span>{{ order.date|format_datetime }}</span>
                     </div>
                     <div>${{ order.get_total_price() }}</div>
-
+                    <div>
+                        <form action="/mark-as-delivered/{{ order.id_order }}">
+                            <submit>
+                                <input type="submit" value="Actualizar como entregado">
+                            </submit>
+                        </form>
+                    </div>
+                    <div>
+                        <form action="/mark-as-canceled/{{ order.id_order }}">
+                            <submit>
+                                <input type="submit" value="Cancelar pedido">
+                            </submit>
+                        </form>
+                    </div>
                 </li>
                 {% endfor %}
             </ul>

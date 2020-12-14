@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block title %}Agregar producto{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        {% if product != None %}
+            <h4>Editar producto</h4>
+        {% else %}
+            <h4>Agregar producto</h4>
+        {% endif %}
+    </div>
+    <div class="col-md-6">
+        <form method="post">
+            <div class="form-group">
+                <label>Descripción</label>
+                <input class="form-control" value="{% if product != None %}{{ product.description }}{%endif %}" type="text" name="description">
+            </div>
+            <div class="form-group">
+                <label>Precio</label>
+                <input class="form-control" value="{% if product != None %}{{ product.price }}{%endif %}" type="number" name="price">
+            </div>
+            {% if product == None %}
+                <div class="form-group">
+                    <input class="form-control" type="submit" value="Agregar">
+                </div>
+            {% else %}
+                <div class="form-group">
+                    <input class="form-control" type="submit" formaction="/productos/{{ product.id_product }}/editar" value="Guardar">
+                </div>
+            {% endif %}
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -30,6 +30,8 @@ class Order(db.Model):
 
     PENDING_CONFIRM_STATUS = 1
     CONFIRM_STATUS = 2
+    DELIVERED_STATUS = 3
+    CANCELED_STATUS = 4
 
     order_lines = relationship('OrderLine')
     client = relationship('Client')

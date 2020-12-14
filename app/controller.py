@@ -3,7 +3,7 @@ from models import *
 from flask import render_template, jsonify
 from flask import request, redirect, url_for
 from datetime import datetime
-
+import babel
 
 @app.route('/')
 def index():
@@ -26,7 +26,7 @@ def new_order_add_products(id_order):
     return render_template('add-order-items.html', order=order)
 
 
-@app.route('/pedido/<int:id_order>/confirm',methods=['POST'])
+@app.route('/pedido/<int:id_order>/confirmar', methods=['POST'])
 def confirm_order(id_order):
     order = Order.query.get(id_order)
     order.current_status = Order.CONFIRM_STATUS
@@ -54,6 +54,31 @@ def get_products():
     products = Product.query.all()
     return json.dumps(products,cls=AlchemyEncoder)
 
+@app.route('/productos', methods=['GET'])
+def all_products():
+    products = Product.query.all()
+    return render_template('products-list.html', products=products)
+
+@app.route('/productos/nuevo', methods=['GET', 'POST'])
+def new_product():
+    if request.method ==  'POST':
+        product = Product(description=request.form['description'], price=request.form['price'])
+        db.session.add(product)
+        db.session.commit()
+        return redirect(url_for('all_products'))
+    return render_template('add-product.html')
+
+@app.route('/productos/<int:id_product>/editar', methods=['GET', 'POST'])
+def edit_product(id_product):
+    product = Product.query.get(id_product)
+    if request.method == 'POST':
+        product.description = request.form['description']
+        product.price = request.form['price']
+        db.session.merge(product)
+        db.session.commit()
+        return redirect(url_for('all_products'))
+    return render_template('add-product.html', product=product)
+
 def add_item_to_order(order, request, confirm=False):
     id_product = request.form['id_product']
     quantity = int(request.form['quantity'])
@@ -66,12 +91,13 @@ def add_item_to_order(order, request, confirm=False):
     db.session.commit()
 
 def generate_new_order(form_data):
-
+    print(form_data.get('new_client'))
     if form_data.get('new_client', False) == 'on':
         address = form_data['address']
         telephone_number = form_data['telephone_number']
         name = form_data['name']
         client = Client(address=address,name=name, telephone_number=telephone_number)
+        db.session.add(client)
         db.session.commit()
         id_client = client.id_client
     else:
@@ -90,8 +116,26 @@ def generate_new_order(form_data):
     db.session.commit()
     return order
 
+@app.route('/mark-as-delivered/<int:id_order>')
+def mark_as_delivered(id_order):
+    order = Order.query.get(id_order)
+    order.current_status = Order.DELIVERED_STATUS
+    db.session.merge(order)
+    db.session.commit()
+    return redirect(url_for('index'))
+
+@app.route('/mark-as-canceled/<int:id_order>')
+def mark_as_canceled(id_order):
+    order = Order.query.get(id_order)
+    order.current_status = Order.CANCELED_STATUS
+    db.session.merge(order)
+    db.session.commit()
+    return redirect(url_for('index'))
 
 @app.context_processor
 def inject_now():
     return {'now': datetime.utcnow()}
 
+@app.template_filter()
+def format_datetime(value,format="%d/%m/%Y %H:%M"):
+    return value.strftime(format)
