@@ -1,9 +1,9 @@
-from app import app, db
+from app import db, app
 from models import *
-from flask import render_template, jsonify
+from flask import render_template
 from flask import request, redirect, url_for
 from datetime import datetime
-import babel
+
 
 @app.route('/')
 def index():
