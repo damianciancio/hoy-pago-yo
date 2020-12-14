@@ -80,7 +80,7 @@ def new_product():
         db.session.add(product)
         db.session.commit()
         return redirect(url_for('all_products'))
-    return render_template('add-product.html')
+    return render_template('add-product.html', product=None)
 
 @app.route('/productos/<int:id_product>/editar', methods=['GET', 'POST'])
 def edit_product(id_product):
