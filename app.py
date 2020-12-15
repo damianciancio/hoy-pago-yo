@@ -9,7 +9,7 @@ if 'HEROKU_APP' in os.environ:
     on_heroku = True
 
 if on_heroku:
-    db_url = 'mysql+mysqlconnector://Edf63AUxmZ:0fpeIbtgvL@remotemysql.com/Edf63AUxmZ'
+    db_url = 'mysql+mysqlconnector://damian73:System32@damian73.mysql.pythonanywhere-services.com/hoy_pago_yo'
 else:
     db_url = 'mysql+mysqlconnector://mywebuser:web000@localhost/hoy_pago_yo'
 app.config['SQLALCHEMY_DATABASE_URI'] = db_url
