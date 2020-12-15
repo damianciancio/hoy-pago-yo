@@ -44,6 +44,8 @@ def update_pricelist():
 def confirm_order(id_order):
     order = Order.query.get(id_order)
     order.current_status = Order.CONFIRM_STATUS
+    if request.form.get('observations', False):
+        order.observations = request.form.get('observations')
     db.session.merge(order)
     db.session.commit()
     return redirect(url_for('index'))
@@ -99,6 +101,9 @@ def add_item_to_order(order, request, confirm=False):
     product = Product.query.get(id_product)
     order_line = OrderLine(id_product=id_product, quantity=quantity, unitary_price=product.price, total_price=int(product.price) * quantity)
     order.order_lines.append(order_line)
+    if request.form.get('observations', False):
+        order.observations = request.form.get('observations')
+
     if confirm:
         order.current_status = Order.CONFIRM_STATUS
     db.session.merge(order)
@@ -117,6 +122,7 @@ def generate_new_order(form_data):
     else:
         id_client = form_data['id_client']
     address = form_data['address']
+    observations = form_data['observations']
     date = form_data['date']
     if form_data.get('is_delivery', False) == 'on':
         is_delivery = 1
@@ -125,7 +131,7 @@ def generate_new_order(form_data):
 
     telephone_number = form_data['telephone_number']
 
-    order = Order(id_client=id_client, address=address, date=date, is_delivery=is_delivery,telephone_number=telephone_number,current_status=Order.PENDING_CONFIRM_STATUS)
+    order = Order(id_client=id_client, observations=observations, address=address, date=date, is_delivery=is_delivery,telephone_number=telephone_number,current_status=Order.PENDING_CONFIRM_STATUS)
     db.session.add(order)
     db.session.commit()
     return order

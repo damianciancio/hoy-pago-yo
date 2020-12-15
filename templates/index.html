@@ -5,36 +5,42 @@
 {% endblock %}
 {% block content %}
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-lg-12">
             <h2>Pedidos pendientes</h2>
         </div>
-        <div class="col-md-12">
+        <div class="col-lg-12">
             <ul class="list-group">
                 {% for order in orders %}
                 <li class="list-group-item">
                     <div class="d-flex justify-content-between">
-                        <span>{{ order.client.name }}({% if order.is_delivery %}{{ order.address }}{% else %}Retira en local{% endif %} - {{ order.telephone_number }})</span><span>{{ order.get_lines_description() }}</span><span>{{ order.date|format_datetime }}</span>
+                        <span>{{ order.client.name }}({% if order.is_delivery %}{{ order.address }}{% else %}Retira en local{% endif %} - {{ order.telephone_number }})</span><span>{{ order.date|format_datetime }}</span>
                     </div>
-                    <div>${{ order.get_total_price() }}</div>
+                    {% for item in order.order_lines %}
+                        <div>
+                            {{ item.get_description() }}
+                        </div>
+                    {% endfor %}
                     <div>
+                        ${{ order.get_total_price() }}
+                    </div>
+                    {% if order.observations %}
+                        <div>
+                            {{ order.observations }}
+                        </div>
+                    {% endif %}
+                    <div class="d-flex justify-content-end">
                         <form action="/mark-as-delivered/{{ order.id_order }}">
-                            <submit>
-                                <input type="submit" value="Actualizar como entregado">
-                            </submit>
+                            <input class="btn btn-success" type="submit" value="Entregado">
                         </form>
-                    </div>
-                    <div>
                         <form action="/mark-as-canceled/{{ order.id_order }}">
-                            <submit>
-                                <input type="submit" value="Cancelar pedido">
-                            </submit>
+                            <input class="btn btn-danger" type="submit" value="Cancelar">
                         </form>
                     </div>
                 </li>
                 {% endfor %}
             </ul>
         </div>
-        <div class="col-md-12">
+        <div class="col-lg-12">
             <div class="d-flex justify-content-end">
                 <a href="{{ url_for('new_order') }}">Nuevo pedido</a>
             </div>

@@ -27,6 +27,7 @@ class Order(db.Model):
     current_status=db.Column(db.Integer)
     is_delivery=db.Column(db.Boolean)
     telephone_number = db.Column(db.String(45))
+    observations = db.Column(db.String(150))
 
     PENDING_CONFIRM_STATUS = 1
     CONFIRM_STATUS = 2
@@ -39,7 +40,7 @@ class Order(db.Model):
     def get_lines_description(self):
         descriptions = []
         for line in self.order_lines:
-            descriptions.append(str(line.quantity) + " " + line.product.description + "($ " + str(line.total_price) + ")")
+            descriptions.append(line.get_description())
         return ", ".join(tuple(descriptions))
     def get_total_price(self):
         total = 0
@@ -58,6 +59,9 @@ class OrderLine(db.Model):
     total_price=db.Column(db.Float)
 
     product = relationship('Product')
+
+    def get_description(self):
+        return "x" + str(self.quantity) + " " + self.product.description + "($ " + str(self.total_price) + ")"
 
 from sqlalchemy.ext.declarative import DeclarativeMeta
 
