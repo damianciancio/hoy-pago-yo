@@ -49,6 +49,15 @@ class Order(db.Model):
 
         return total
 
+    states_names = {
+        PENDING_CONFIRM_STATUS: 'Pendiente de confirmación',
+        CONFIRM_STATUS: 'Confirmado',
+        DELIVERED_STATUS:'Entregado',
+        CANCELED_STATUS: 'Cancelado'
+    }
+    def get_status_description(self):
+        return self.states_names[self.current_status]
+
 class OrderLine(db.Model):
     __tablename__ = 'order_lines'
     id_order=db.Column(db.Integer, ForeignKey('orders.id_order'), primary_key=True)

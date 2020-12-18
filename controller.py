@@ -2,12 +2,12 @@ from app import db, app
 from models import *
 from flask import render_template
 from flask import request, redirect, url_for
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 @app.route('/')
 def index():
-    orders = Order.query.filter(Order.current_status == Order.CONFIRM_STATUS)
+    orders = Order.query.order_by(Order.date.asc()).filter(Order.current_status == Order.CONFIRM_STATUS)
     return render_template('index.html', orders=orders)
 
 @app.route('/editar-pedido/<int:id_order>/confirmar', methods=['GET', 'POST'])
@@ -16,6 +16,16 @@ def new_order_add_products_and_confirm(id_order):
     if request.method == 'POST':
         add_item_to_order(order, request,confirm=True)
     return redirect(url_for('index'))
+
+@app.route('/pedidos')
+def orders():
+    date_from = datetime.strptime(request.args.get('date_from'), '%Y-%m-%d') if request.args.get('date_from') != None else get_default_from_date()
+    date_to = datetime.strptime(request.args.get('date_to'), '%Y-%m-%d') if request.args.get('date_to') != None else get_default_to_date()
+    status = request.args.get('status')
+    orders = Order.query.filter(Order.date >= date_from).filter(Order.date <= date_to)
+    if status != 0:
+        orders = orders.filter(Order.current_status == status)
+    return render_template('all-orders.html', orders=orders, states_names=Order.states_names, date_from=date_from, date_to=date_to, status=status)
 
 @app.route('/editar-pedido/<int:id_order>', methods=['GET', 'POST'])
 def new_order_add_products(id_order):
@@ -110,8 +120,7 @@ def add_item_to_order(order, request, confirm=False):
     db.session.commit()
 
 def generate_new_order(form_data):
-    print(form_data.get('new_client'))
-    if form_data.get('new_client', False) == 'on':
+    if not form_data.get('id_client', False):
         address = form_data['address']
         telephone_number = form_data['telephone_number']
         name = form_data['name']
@@ -159,3 +168,11 @@ def inject_now():
 @app.template_filter()
 def format_datetime(value,format="%d/%m/%Y %H:%M"):
     return value.strftime(format)
+
+
+def get_default_from_date():
+    return datetime.today() - timedelta(days=7)
+
+
+def get_default_to_date():
+    return datetime.today()

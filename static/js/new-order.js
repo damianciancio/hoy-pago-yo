@@ -3,9 +3,18 @@ jQuery(document).ready(() => {
 
         $('input[name="new_client"]').on('change', () => {
             var isChecked = $('input[name="new_client"]').prop('checked');
+            if (isChecked) {
+                $('input[name="new_client"]').val('on')
+            }
+            else {
+                $('input[name="new_client"]').val('off')
+            }
             $('input[name="id_client"]').val("")
-
+            $('input[name="name"]').prop('disabled', !isChecked)
+            $('input[name="new_client"]').prop('disabled', isChecked)
         });
+        $('input[name="new_client"]').prop('checked', true)
+        $('input[name="new_client"]').prop('disabled', 'disabled')
 
        new Vue({
             el: '#client-list',
@@ -27,8 +36,10 @@ jQuery(document).ready(() => {
             methods: {
                 loadClient(client) {
                     $('input[name="new_client"]').prop('checked', false)
+                    $('input[name="new_client"]').prop('disabled', false)
                     $('input[name="id_client"]').val(client.id_client)
                     $('input[name="name"]').val(client.name)
+                    $('input[name="name"]').prop('disabled','disabled')
                     $('input[name="address"]').val(client.address)
                     $('input[name="telephone_number"]').val(client.telephone_number)
 
