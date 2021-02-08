@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 
 app=Flask(__name__)
-app.config['SECRET_KEY'] = 'asddq132324{{´+'
+app.config['SECRET_KEY'] = 'asddq132324{{+'
 on_heroku = False
 if 'HEROKU_APP' in os.environ:
     on_heroku = True
