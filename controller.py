@@ -68,7 +68,8 @@ def new_order():
         order= generate_new_order(request.form)
         return redirect(url_for('new_order_add_products', id_order=order.id_order))
     clients = Client.query.all()
-    return render_template('new-order.html', clients=clients)
+    cities = City.query.all()
+    return render_template('new-order.html', clients=clients,cities=cities)
 
 @app.route('/rest/clients')
 def get_clients():
@@ -144,7 +145,8 @@ def generate_new_order(form_data):
         address = form_data['address']
         telephone_number = form_data['telephone_number']
         name = form_data['name']
-        client = Client(address=address,name=name, telephone_number=telephone_number)
+        id_city = form_data['id_city']
+        client = Client(address=address,name=name, telephone_number=telephone_number, id_city=id_city)
         db.session.add(client)
         db.session.commit()
         id_client = client.id_client
@@ -153,6 +155,8 @@ def generate_new_order(form_data):
     address = form_data['address']
     observations = form_data['observations']
     date = form_data['date']
+    id_city = form_data['id_city']
+
     if form_data.get('is_delivery', False) == 'on':
         is_delivery = 1
     else:
@@ -160,7 +164,7 @@ def generate_new_order(form_data):
 
     telephone_number = form_data['telephone_number']
 
-    order = Order(id_client=id_client, observations=observations, address=address, date=date, is_delivery=is_delivery,telephone_number=telephone_number,current_status=Order.PENDING_CONFIRM_STATUS)
+    order = Order(id_client=id_client, observations=observations, address=address, date=date, is_delivery=is_delivery,telephone_number=telephone_number,current_status=Order.PENDING_CONFIRM_STATUS, id_city=id_city)
     db.session.add(order)
     db.session.commit()
     return order

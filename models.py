@@ -34,6 +34,7 @@ class Order(db.Model):
     is_delivery=db.Column(db.Boolean)
     telephone_number = db.Column(db.String(45))
     observations = db.Column(db.String(150))
+    id_city = db.Column(db.Integer, ForeignKey('cities.id_city'))
 
     PENDING_CONFIRM_STATUS = 1
     CONFIRM_STATUS = 2
@@ -42,6 +43,7 @@ class Order(db.Model):
 
     order_lines = relationship('OrderLine')
     client = relationship('Client')
+    city = relationship('City')
 
     def get_lines_description(self):
         descriptions = []

@@ -28,6 +28,17 @@
                 <input class="form-control" type="text" name="telephone_number">
             </div>
             <div class="form-group">
+                <label>Ciudad
+                </label>
+                <select class="form-control"  name="id_city">
+                    {% for city in cities %}
+                        <option value="{{ city.id_city }}">
+                            {{ city.description }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
                 <label>Dirección
                 </label>
                 <input class="form-control" type="text" name="address">
@@ -56,7 +67,7 @@
         <h4>Buscar cliente</h4>
         <input class="form-control" v-on:keyup="search" placeholder="Buscar por nombre, dirección o teléfono..." type="text" v-model="searchText">
         <small>Haga click en el cliente para pre-cargar datos en el pedido</small>
-        <ul class="list-group">
+        <ul id="client-list-ul" class="list-group">
             <li v-for="client in clientsFiltered" class="list-group-item" v-on:click="loadClient(client)">
                 <div class="d-flex justify-content-between">
                     <span>{$ client.name $}</span><span>{$ client.address $}</span>

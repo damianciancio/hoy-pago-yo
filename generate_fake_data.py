@@ -5,7 +5,11 @@ from datetime import datetime
 from models import Client, Order, OrderLine
 import random
 from app import db
+from eralchemy import render_er
+## Draw from SQLAlchemy base
+render_er(db, 'erd_from_sqlalchemy.png')
 
+pass
 
 fake = Faker('es_ES')
 fake.add_provider(PhoneNumberProvider)
@@ -25,6 +29,7 @@ for _ in range(1000):
 
 
 for _ in range(1000):
+    pass
     new_fake_order = Order()
     new_fake_order.id_client = random.randint(1014,2010)
     new_fake_order.date = fake.date_between_dates(date_start=datetime(2021,1,1), date_end=datetime(2021,2,26)).isoformat()
