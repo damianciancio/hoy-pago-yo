@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block title %}Actualizar lista de precios{% endblock %}
+{% block head %}
+{{ super() }}
+<script type="text/javascript" src="{{url_for('static', filename='js/report.js')}}"></script>
+
+{% endblock %}
+{% block content %}
+<div id="filters">
+    <h3>
+        Reporte de pedidos realizados para las fechas ${ date_from | date } y ${ date_to | date }
+    </h3>
+    <div>
+        <h5>
+            Filtrar
+        </h5>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Desde</label>
+                    <input class="form-control" type="date" v-model="date_from" >
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Hasta</label>
+                    <input class="form-control" type="date" v-model="date_to" >
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Agrupación</label>
+                    <select v-model="mode" class="form-control">
+                        <option value="days">
+                            Diaria
+                        </option>
+                        <option value="months">
+                            Mensual
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button style="margin-top:27px;" class="btn btn-success" v-on:click="refreshData">
+                    Filtrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div style="margin-top:20px;" id="report"></div>
+{% endblock %}

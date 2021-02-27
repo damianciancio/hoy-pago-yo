@@ -2,8 +2,8 @@ from app import db, app
 from models import *
 from flask import render_template
 from flask import request, redirect, url_for
-from datetime import datetime, timedelta
-
+from datetime import datetime, timedelta, date
+from catalog import *
 
 @app.route('/')
 def index():
@@ -84,6 +84,9 @@ def get_products():
 def all_products():
     products = Product.query.all()
     return render_template('products-list.html', products=products)
+@app.route('/reporte')
+def report():
+    return render_template('report.html')
 
 @app.route('/productos/nuevo', methods=['GET', 'POST'])
 def new_product():
@@ -104,6 +107,23 @@ def edit_product(id_product):
         db.session.commit()
         return redirect(url_for('all_products'))
     return render_template('add-product.html', product=product)
+
+@app.route('/rest/report/<string:type>', methods=['GET'])
+def report_data(type):
+    date_from = datetime.strptime(request.args.get('from'),'%Y-%m-%d')
+    date_to = datetime.strptime(request.args.get('to'),'%Y-%m-%d')
+
+    if date_from == None or date_to == None:
+        date_from = get_default_from_date(type=type)
+        date_to = get_default_to_date()
+
+    response = {
+        "date_from": date_from.isoformat(),
+        "date_to": date_to.isoformat(),
+        "data": get_orders_report(date_from, date_to, type)
+    }
+    print(response['data'])
+    return json.dumps(response, cls=AlchemyEncoder)
 
 def add_item_to_order(order, request, confirm=False):
     id_product = request.form['id_product']
@@ -170,8 +190,11 @@ def format_datetime(value,format="%d/%m/%Y %H:%M"):
     return value.strftime(format)
 
 
-def get_default_from_date():
-    return datetime.today() - timedelta(days=7)
+def get_default_from_date(type='days'):
+    if type == 'days':
+        return datetime.today() - timedelta(days=700)
+    if type == 'months':
+        return datetime.today() - timedelta(months=1)
 
 
 def get_default_to_date():

@@ -9,7 +9,13 @@ class Client(db.Model):
     name=db.Column(db.String(60))
     address=db.Column(db.String(60))
     telephone_number = db.Column(db.String(45))
+    id_city = db.Column(db.Integer, ForeignKey('cities.id_city'))
+    city = relationship('City')
 
+class City(db.Model):
+    __tablename__ = 'cities'
+    id_city = db.Column(db.Integer, primary_key=True)
+    description = db.Column(db.String(45))
 
 class Product(db.Model):
     __tablename__ = 'products'

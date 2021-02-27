@@ -3,3 +3,4 @@ gunicorn
 flask_sqlalchemy
 sqlalchemy
 mysql-connector
+Faker
