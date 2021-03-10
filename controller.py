@@ -4,6 +4,7 @@ from flask import render_template
 from flask import request, redirect, url_for
 from datetime import datetime, timedelta, date
 from catalog import *
+from generate_fake_data import generate_fake_data
 
 @app.route('/')
 def index():
@@ -203,3 +204,12 @@ def get_default_from_date(type='days'):
 
 def get_default_to_date():
     return datetime.today()
+
+@app.route('/config')
+def config():
+    return app['SQLALCHEMY_DATABASE_URI']
+
+@app.route('generate-fake-data')
+def fake_data():
+    generate_fake_data()
+    return "ok"
