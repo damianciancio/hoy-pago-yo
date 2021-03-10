@@ -11,8 +11,9 @@ if 'HEROKU_APP' in os.environ:
 else:
     file = open('./config.txt')
     db_url = file.read()
-    app.config['SQLALCHEMY_DATABASE_URI'] = db_url
     file.close()
+
+app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 
 
 db=SQLAlchemy(app)
