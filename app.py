@@ -7,7 +7,8 @@ app.config['SECRET_KEY'] = 'asddq132324{{+'
 on_heroku = False
 if 'HEROKU_APP' in os.environ:
     on_heroku = True
-    db_url = 'mysql+mysqlconnector://damian73:System32@damian73.mysql.pythonanywhere-services.com/hoy_pago_yo'
+    db_url = 'mysql+mysqlconnector://Edf63AUxmZ:qtxm421wgH@remotemysql.com/Edf63AUxmZ'
+    #db_url = 'mysql+mysqlconnector://damian73:System32@damian73.mysql.pythonanywhere-services.com/hoy_pago_yo'
 else:
     file = open('./config.txt')
     db_url = file.read()
