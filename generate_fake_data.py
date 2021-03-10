@@ -11,7 +11,7 @@ def generate_fake_data():
     fake.add_provider(PhoneNumberProvider)
 
 
-    for _ in range(1000):
+    for _ in range(100):
         pass
         new_fake_client = Client()
         new_fake_client.name = fake.name()
@@ -23,9 +23,9 @@ def generate_fake_data():
 
 
 
-    for _ in range(1000):
+    for _ in range(100):
         new_fake_order = Order()
-        new_fake_order.id_client = random.randint(1014,2010)
+        new_fake_order.id_client = random.randint(1,99)
         new_fake_order.date = fake.date_between_dates(date_start=datetime(2021,1,1), date_end=datetime(2021,2,26)).isoformat()
         new_fake_order.address = fake.address()
         new_fake_order.current_status = Order.DELIVERED_STATUS
