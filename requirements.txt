@@ -4,4 +4,3 @@ flask_sqlalchemy
 sqlalchemy
 mysql-connector
 Faker
-eralchemy

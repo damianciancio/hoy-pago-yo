@@ -1,15 +1,9 @@
 from faker import Faker
 from faker.providers.phone_number.es_ES import PhoneNumberProvider
-from collections import defaultdict
 from datetime import datetime
 from models import Client, Order, OrderLine
 import random
 from app import db
-from eralchemy import render_er
-## Draw from SQLAlchemy base
-render_er(db, 'erd_from_sqlalchemy.png')
-
-pass
 
 fake = Faker('es_ES')
 fake.add_provider(PhoneNumberProvider)
