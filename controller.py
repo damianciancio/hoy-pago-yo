@@ -209,7 +209,7 @@ def get_default_to_date():
 def config():
     return app['SQLALCHEMY_DATABASE_URI']
 
-@app.route('generate-fake-data')
+@app.route('/generate-fake-data')
 def fake_data():
     generate_fake_data()
     return "ok"
